@@ -3,8 +3,8 @@
 #include <fstream>
 #include <cmath>
 
-const double a_p = 2*4*factorial(18);
-const double b_p = 1;
+const double a_p = 5000.0;
+const double b_p = 1.0;
 
 double caso_1(double x, double y, double a, double b)
 {
@@ -47,14 +47,15 @@ double rk4(fptr fun, double x, double y, double h)
 
 void integracion_rk4(fptr fun, fptr2 alg, double h, double valor_inicial)
 {
+  double k = 1000000.0;
   std::ofstream fout("rk4.txt");
   double aux = valor_inicial;
-  int N = (XMAX - XMIN)/h;
+  int N = (XMAX - XMIN)/(k*h);
   for(int i=0; i<=N; ++i)
   {
-    double xi = XMIN + h*i;
+    double xi = XMIN + k*h*i;
     fout << xi << "\t" << aux << "\n";
-    aux = rk4(fun, xi, aux, h);
+    aux = rk4(fun, xi, aux, k*h);
   }
   fout.close();
 }
@@ -81,7 +82,7 @@ double h_estable(fptr2 alg, fptr fun, double valor_inicial, double eps)
   double h;
   for(int i=0; i<5000; ++i)
   {
-    h = std::pow(1.1, -i);
+    h = std::pow(20, -i);
     if(cambio_max(alg, fun, h, valor_inicial)<=eps)
     {
       break;
