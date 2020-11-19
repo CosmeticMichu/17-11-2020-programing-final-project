@@ -3,8 +3,9 @@
 #include <fstream>
 #include <cmath>
 
-const double a_p = 5000.0;
+const double a_p = 1000.0;
 const double b_p = 1.0;
+const double k = std::pow(10, 20);
 
 double caso_1(double x, double y, double a, double b)
 {
@@ -47,7 +48,6 @@ double rk4(fptr fun, double x, double y, double h)
 
 void integracion_rk4(fptr fun, fptr2 alg, double h, double valor_inicial)
 {
-  double k = 1000000.0;
   std::ofstream fout("rk4.txt");
   double aux = valor_inicial;
   int N = (XMAX - XMIN)/(k*h);
@@ -63,11 +63,11 @@ void integracion_rk4(fptr fun, fptr2 alg, double h, double valor_inicial)
 double cambio_max(fptr2 alg, fptr fun, double h, double valor_inicial)
 {
   double aux = 0.0, aux1 = valor_inicial, aux2 = valor_inicial;
-  int N = (XMAX - XMIN)/h;
+  int N = (XMAX - XMIN)/(k*h);
   for(int i=0; i<=N; ++i)
   {
-    double xi = XMIN + h*i;
-    aux1 = alg(fun, xi, aux1, h);
+    double xi = XMIN + k*h*i;
+    aux1 = alg(fun, xi, aux1, k*h);
     if(std::fabs(aux2 - aux1)>aux)
     {
       aux = std::fabs(aux2 - aux1);
@@ -80,7 +80,7 @@ double cambio_max(fptr2 alg, fptr fun, double h, double valor_inicial)
 double h_estable(fptr2 alg, fptr fun, double valor_inicial, double eps)
 {
   double h;
-  for(int i=0; i<5000; ++i)
+  for(int i=0; i<300; ++i)
   {
     h = std::pow(20, -i);
     if(cambio_max(alg, fun, h, valor_inicial)<=eps)
@@ -91,7 +91,7 @@ double h_estable(fptr2 alg, fptr fun, double valor_inicial, double eps)
 return h;
 }
 
-void max_global(fptr2 alg, fptr fun, double h, double valor_inicial)
+/*void max_global(fptr2 alg, fptr fun, double h, double valor_inicial)
 {
   int N = (XMAX - XMIN)/h;
   double aux = valor_inicial, aux1 = valor_inicial, xaux;
@@ -106,7 +106,7 @@ void max_global(fptr2 alg, fptr fun, double h, double valor_inicial)
     }
   }
   std::cout << "El valor máximo de temperatura es " << aux1 << " y ocurre al tiempo " << xaux << "\n";
-}
+}*/
 
 double factorial(double n)
 {
