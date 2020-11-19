@@ -10,7 +10,6 @@ using fptr2 = double(fptr, double, double, double); // usado para llamar los alg
 
 const double XMIN = 0; // valor del tiempo inicial
 const double XMAX = 20; // valor del tiempo final
-const double dx = 0.5; // valor del paso
 const double valor_inicial = 0.0; // valor de la temperatura en el tiempo inicial 
 const double a_p = 5; // paràmetro de la ecuación diferencial 
 const double b_p = 5; // paràmetro de la ecuación diferencial 
