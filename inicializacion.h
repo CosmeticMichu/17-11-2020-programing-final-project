@@ -1,6 +1,6 @@
 #ifndef __INICIALIZACION_H_
 #define __INICIALIZACION_H_
-
+//comentario de prueba
 // Archivo de inicializacion del programa que incluye las constantes y la definición de las funciones
 
 #include <iostream>
