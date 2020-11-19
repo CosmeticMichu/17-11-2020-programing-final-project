@@ -3,13 +3,9 @@
 #include <fstream>
 #include <cmath>
 
-const double a_p = 1000.0;
-const double b_p = 1.0;
-const double k = std::pow(10, 20);
-
 double caso_1(double x, double y, double a, double b)
 {
-  return a*std::pow(M_E, -2*x) - std::pow(y, 4);
+  return a*std::pow(M_E, -2*x) - std::pow(y, 4); // el paràmetro b no se usa por lo que no afecta
 }
 
 double caso_2(double x, double y, double a, double b)
@@ -26,12 +22,12 @@ void integracion_euler(fptr fun, fptr2 alg, double h, double valor_inicial)
 {
   std::ofstream fout("euler_method.txt");
   double aux = valor_inicial;
-  int N = (XMAX - XMIN)/h;
+  int N = (XMAX - XMIN)/(k*h);
   for(int i = 0; i<=N; ++i)
   {
-    double xi = XMIN + i*h;
+    double xi = XMIN + i*h*k;
     fout << xi << "\t" << aux << "\n";
-    aux = euler(fun, xi, aux, h);
+    aux = euler(fun, xi, aux, k*h);
   }
   fout.close();
 }
@@ -62,19 +58,19 @@ void integracion_rk4(fptr fun, fptr2 alg, double h, double valor_inicial)
 
 double cambio_max(fptr2 alg, fptr fun, double h, double valor_inicial)
 {
-  double aux = 0.0, aux1 = valor_inicial, aux2 = valor_inicial;
-  int N = (XMAX - XMIN)/(k*h);
+  double aux = 0.0, aux1 = valor_inicial, aux2 = valor_inicial; // se usan tres auxiliares, el primero para guardar el cambio máximo, los otros dos para medirlo
+  int N = (XMAX - XMIN)/(c*h);
   for(int i=0; i<=N; ++i)
   {
-    double xi = XMIN + k*h*i;
-    aux1 = alg(fun, xi, aux1, k*h);
+    double xi = XMIN + h*i*c;
+    aux1 = alg(fun, xi, aux1, h*c); // calcula el siguiente paso de la funciòn
     if(std::fabs(aux2 - aux1)>aux)
     {
-      aux = std::fabs(aux2 - aux1);
+      aux = std::fabs(aux2 - aux1); //compara la diferencia entre los dos pasos y si es la mayor obtenida hasta el momento la almacena en el auxiliar
     }
-    aux2 = aux1;
+    aux2 = aux1; 
   }
-  return aux;
+  return aux; // retorna el valor máximo
 }
 
 double h_estable(fptr2 alg, fptr fun, double valor_inicial, double eps)
@@ -82,7 +78,7 @@ double h_estable(fptr2 alg, fptr fun, double valor_inicial, double eps)
   double h;
   for(int i=0; i<300; ++i)
   {
-    h = std::pow(20, -i);
+    h = std::pow(2, -i);
     if(cambio_max(alg, fun, h, valor_inicial)<=eps)
     {
       break;
@@ -91,7 +87,7 @@ double h_estable(fptr2 alg, fptr fun, double valor_inicial, double eps)
 return h;
 }
 
-/*void max_global(fptr2 alg, fptr fun, double h, double valor_inicial)
+void max_global(fptr2 alg, fptr fun, double h, double valor_inicial)
 {
   int N = (XMAX - XMIN)/h;
   double aux = valor_inicial, aux1 = valor_inicial, xaux;
@@ -106,17 +102,4 @@ return h;
     }
   }
   std::cout << "El valor máximo de temperatura es " << aux1 << " y ocurre al tiempo " << xaux << "\n";
-}*/
-
-double factorial(double n)
-{
-  if(n==0)
-  {
-    return 1;
-  }
-  else
-  {
-    n = n*factorial(n-1);
-  }
-  return n;
 }
