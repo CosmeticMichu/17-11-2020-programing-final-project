@@ -58,19 +58,20 @@ void integracion_rk4(fptr fun, fptr2 alg, double h, double valor_inicial)
 
 double cambio_max(fptr2 alg, fptr fun, double h, double valor_inicial)
 {
-  double aux = 0.0, aux1 = valor_inicial, aux2 = valor_inicial; // se usan tres auxiliares, el primero para guardar el cambio máximo, los otros dos para medirlo
-  int N = (XMAX - XMIN)/(c*h);
-  for(int i=0; i<=N; ++i)
+  int N = (XMAX - XMIN)/h; // la cantidad de particiones del intervalo
+  double aux=valor_inicial + 0.01; // un pequeño cambio en la condición inicial
+  double aux1 = valor_inicial, aux2 = 0; 
+  aux2 = std::fabs(alg(fun, 0, aux1, h) - alg(fun, 0, aux, h)); // guarda la diferencia del algoritmo implementado en el mismo punto con una pequeña alteración de la condición inicial 
+  for(int i=0; i <= N; ++i)
   {
-    double xi = XMIN + h*i*c;
-    aux1 = alg(fun, xi, aux1, h*c); // calcula el siguiente paso de la funciòn
-    if(std::fabs(aux2 - aux1)>aux)
-    {
-      aux = std::fabs(aux2 - aux1); //compara la diferencia entre los dos pasos y si es la mayor obtenida hasta el momento la almacena en el auxiliar
+    double xi = 0 + i*h;
+    aux = alg(fun, xi, aux, h);
+    aux1 = alg(fun, xi, aux1, h); //estos guardan los puntos siguientes dados para cada uno de los casos (el de la condicion inicial normal y el de la condicion inicial un poco cambiada)
+    if(std::fabs(alg(fun, xi, aux1, h) - alg(fun, xi, aux, h))<= aux2){
+      aux2 = std::fabs(alg(fun, xi, aux1, h) - alg(fun, xi, aux, h)); // si en el siguiente punto la diferencia entre los dos es mayor, se remplaza el valor 
     }
-    aux2 = aux1; 
+    return aux2; // retorna la diferencia máxima en el intervalo 
   }
-  return aux; // retorna el valor máximo
 }
 
 double h_estable(fptr2 alg, fptr fun, double valor_inicial, double eps)
@@ -78,13 +79,13 @@ double h_estable(fptr2 alg, fptr fun, double valor_inicial, double eps)
   double h;
   for(int i=0; i<300; ++i)
   {
-    h = std::pow(2, -i);
+    h = std::pow(1.01, -i);
     if(cambio_max(alg, fun, h, valor_inicial)<=eps)
     {
       break;
     }
   }
-return h;
+  return h;
 }
 
 void max_global(fptr2 alg, fptr fun, double h, double valor_inicial)

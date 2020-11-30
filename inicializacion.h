@@ -13,7 +13,7 @@ const double XMAX = 20; // valor del tiempo final
 const double valor_inicial = 0.0; // valor de la temperatura en el tiempo inicial 
 const double a_p = 5; // paràmetro de la ecuación diferencial 
 const double b_p = 5; // paràmetro de la ecuación diferencial 
-const double eps = 0.01; // epsilon usado para medir la estabilidad del mètodo 
+const double eps = 0.001; // epsilon usado para medir la estabilidad del mètodo 
 const double k = 1; // paràmetro usado para no imprimir un número exagerado de datos en el .txt sino los necesarios
 const double c = 1; // parámetro usado para optimizar la función h_estable
 
