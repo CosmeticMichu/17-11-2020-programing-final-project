@@ -14,8 +14,6 @@ const double valor_inicial = 0.0; // valor de la temperatura en el tiempo inicia
 const double a_p = 5; // paràmetro de la ecuación diferencial 
 const double b_p = 5; // paràmetro de la ecuación diferencial 
 const double eps = 0.001; // epsilon usado para medir la estabilidad del mètodo 
-const double k = 1; // paràmetro usado para no imprimir un número exagerado de datos en el .txt sino los necesarios
-const double c = 1; // parámetro usado para optimizar la función h_estable
 
 double caso_1(double x, double y, double a, double b); // definición de la ecuación diferencial de un parámetro, se introduce el parámetro b para poder usar también el fptr 
 double caso_2(double x, double y, double a, double b); // definición de la ecuación diferencial de dos parámetros
