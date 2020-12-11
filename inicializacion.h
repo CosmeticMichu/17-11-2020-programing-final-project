@@ -11,8 +11,8 @@ using fptr2 = double(fptr, double, double, double); // usado para llamar los alg
 const double XMIN = 0; // valor del tiempo inicial
 const double XMAX = 20; // valor del tiempo final
 const double valor_inicial = 0.0; // valor de la temperatura en el tiempo inicial 
-const double a_p = 5; // paràmetro de la ecuación diferencial 
-const double b_p = 5; // paràmetro de la ecuación diferencial 
+const double a_p = 6; // paràmetro de la ecuación diferencial 
+const double b_p = 0; // paràmetro de la ecuación diferencial 
 const double eps = 0.001; // epsilon usado para medir la estabilidad del mètodo 
 
 double caso_1(double x, double y, double a, double b); // definición de la ecuación diferencial de un parámetro, se introduce el parámetro b para poder usar también el fptr 
