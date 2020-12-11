@@ -17,8 +17,9 @@ double cambio_max(fptr2 alg, fptr fun, double h, double valor_inicial)
     if(std::fabs(alg(fun, xi, aux1, h) - alg(fun, xi, aux, h))<= aux2){
       aux2 = std::fabs(alg(fun, xi, aux1, h) - alg(fun, xi, aux, h)); // si en el siguiente punto la diferencia entre los dos es mayor, se remplaza el valor 
     }
-    return aux2; // retorna la diferencia máxima en el intervalo 
   }
+
+  return aux2; // retorna la diferencia máxima en el intervalo 
 }
 
 double h_estable(fptr2 alg, fptr fun, double valor_inicial, double eps)
